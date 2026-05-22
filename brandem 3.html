@@ -1,0 +1,2510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brandem — We Don't Make Ads. We Engineer Want.</title>
+  <meta name="description" content="Brandem is Bangladesh's premier cinematic ad agency. Netflix-grade production. BFDC-certified direction. Elite brand strategy." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── CSS CUSTOM PROPERTIES (CMS-READY) ─── */
+    :root {
+      --black:       #080808;
+      --off-black:   #0F0F0F;
+      --panel:       #141414;
+      --border:      #1E1E1E;
+      --border-mid:  #2A2A2A;
+      --gold:        #C9A84C;
+      --gold-dim:    #8A6E2F;
+      --gold-glow:   rgba(201,168,76,0.12);
+      --white:       #FAFAFA;
+      --muted:       #6B6B6B;
+      --muted-light: #9A9A9A;
+      --font-display: 'Cormorant Garamond', serif;
+      --font-body:    'Barlow', sans-serif;
+      --font-cond:    'Barlow Condensed', sans-serif;
+      --nav-h:        60px;
+      --ease:         cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ─── RESET ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 15px; }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.65;
+      overflow-x: hidden;
+      cursor: none;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; width: 100%; object-fit: cover; }
+    button { cursor: none; border: none; background: none; font-family: inherit; }
+
+    /* ─── CUSTOM CURSOR ─── */
+    #cursor {
+      position: fixed; top: 0; left: 0; z-index: 9999;
+      pointer-events: none;
+      width: 8px; height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      transform: translate(-50%,-50%);
+      transition: width 0.25s var(--ease), height 0.25s var(--ease), background 0.2s;
+    }
+    #cursor.hover { width: 36px; height: 36px; background: transparent; border: 1px solid var(--gold); }
+    #cursor.click { width: 4px; height: 4px; }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width: 2px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--gold-dim); }
+
+    /* ─── UTILITY ─── */
+    .eyebrow {
+      font-family: var(--font-cond);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 22px; height: 1px;
+      background: var(--gold);
+    }
+    .gold { color: var(--gold); }
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.22s; }
+    .reveal-delay-3 { transition-delay: 0.36s; }
+    .reveal-delay-4 { transition-delay: 0.5s; }
+    .divider {
+      width: 100%; height: 1px;
+      background: var(--border);
+    }
+
+    /* ─── NAVIGATION ─── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px;
+      transition: background 0.4s, border-bottom 0.4s;
+    }
+    #nav.scrolled {
+      background: rgba(8,8,8,0.94);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: var(--white);
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links {
+      display: flex; align-items: center; gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--font-cond);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted-light);
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width 0.3s var(--ease);
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      font-family: var(--font-cond);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold-dim);
+      padding: 8px 18px;
+      transition: background 0.25s, color 0.25s, border-color 0.25s;
+    }
+    .nav-cta:hover {
+      background: var(--gold);
+      color: var(--black);
+      border-color: var(--gold);
+    }
+    .nav-burger {
+      display: none;
+      flex-direction: column; gap: 5px;
+      padding: 4px;
+    }
+    .nav-burger span {
+      display: block; width: 22px; height: 1px;
+      background: var(--white);
+      transition: transform 0.3s, opacity 0.3s;
+    }
+
+    /* ─── MOBILE NAV ─── */
+    #mobile-menu {
+      display: none;
+      position: fixed; inset: 0;
+      background: var(--black);
+      z-index: 999;
+      flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 32px;
+    }
+    #mobile-menu.open { display: flex; }
+    #mobile-menu a {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--white);
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+    #mobile-menu a:hover { color: var(--gold); }
+
+    /* ─── HERO ─── */
+    #hero {
+      position: relative;
+      height: 100vh; min-height: 600px;
+      display: flex; align-items: flex-end;
+      overflow: hidden;
+    }
+    .hero-reel {
+      position: absolute; inset: 0;
+      background: var(--off-black);
+      overflow: hidden;
+    }
+    /* Cinematic film-grain overlay */
+    .hero-reel::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 1;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.35;
+      pointer-events: none;
+    }
+    .hero-reel::after {
+      content: '';
+      position: absolute; inset: 0; z-index: 2;
+      background: linear-gradient(
+        to bottom,
+        rgba(8,8,8,0.15) 0%,
+        rgba(8,8,8,0.0) 30%,
+        rgba(8,8,8,0.55) 70%,
+        rgba(8,8,8,0.95) 100%
+      );
+    }
+    /* Simulated cinematic frames */
+    .reel-frames {
+      position: absolute; inset: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 2px;
+      opacity: 0.5;
+    }
+    .reel-frame {
+      background: var(--panel);
+      position: relative;
+      overflow: hidden;
+    }
+    .reel-frame::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--border) 0%, transparent 60%);
+    }
+    /* Frame placeholder shapes */
+    .reel-frame:nth-child(1) { background: linear-gradient(135deg, #0a0a0a 0%, #161412 100%); }
+    .reel-frame:nth-child(2) { background: linear-gradient(160deg, #111008 0%, #0f0d0b 100%); }
+    .reel-frame:nth-child(3) { background: linear-gradient(120deg, #080a0a 0%, #0d1010 100%); }
+    .reel-frame:nth-child(4) { background: linear-gradient(145deg, #0c0c0a 0%, #101008 100%); }
+    .reel-frame:nth-child(5) { background: linear-gradient(155deg, #0a0c0a 0%, #0e100c 100%); }
+    .reel-frame:nth-child(6) { background: linear-gradient(130deg, #0a0808 0%, #100c0a 100%); }
+
+    /* Animated lens flare */
+    .hero-flare {
+      position: absolute; z-index: 3;
+      width: 1px; height: 100vh;
+      background: linear-gradient(to bottom, transparent, rgba(201,168,76,0.04), transparent);
+      left: 35%;
+      animation: flare-sweep 8s ease-in-out infinite;
+    }
+    @keyframes flare-sweep {
+      0%,100% { opacity: 0; transform: skewX(-5deg) translateX(-60px); }
+      50% { opacity: 1; transform: skewX(-5deg) translateX(60px); }
+    }
+
+    .hero-content {
+      position: relative; z-index: 10;
+      padding: 0 40px 60px;
+      max-width: 900px;
+    }
+    .hero-counter {
+      font-family: var(--font-cond);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fade-up 1s var(--ease) 0.3s forwards;
+    }
+    .hero-h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 6vw, 5.2rem);
+      font-weight: 300;
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      margin-bottom: 22px;
+      opacity: 0;
+      animation: fade-up 1.1s var(--ease) 0.55s forwards;
+    }
+    .hero-h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .hero-sub {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--muted-light);
+      letter-spacing: 0.04em;
+      max-width: 460px;
+      line-height: 1.7;
+      margin-bottom: 34px;
+      opacity: 0;
+      animation: fade-up 1.1s var(--ease) 0.8s forwards;
+    }
+    .hero-actions {
+      display: flex; align-items: center; gap: 22px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fade-up 1s var(--ease) 1s forwards;
+    }
+    .btn-primary {
+      font-family: var(--font-cond);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      background: var(--gold);
+      color: var(--black);
+      padding: 13px 28px;
+      font-weight: 600;
+      transition: background 0.25s, letter-spacing 0.25s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary:hover { background: #e0bd58; letter-spacing: 0.24em; }
+    .btn-secondary {
+      font-family: var(--font-cond);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted-light);
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: color 0.2s;
+    }
+    .btn-secondary:hover { color: var(--white); }
+    .btn-arrow { font-size: 14px; transition: transform 0.2s; }
+    .btn-primary:hover .btn-arrow,
+    .btn-secondary:hover .btn-arrow { transform: translateX(4px); }
+
+    .hero-badge {
+      position: absolute; bottom: 60px; right: 40px; z-index: 10;
+      display: flex; flex-direction: column; align-items: flex-end; gap: 4px;
+      opacity: 0;
+      animation: fade-up 1s var(--ease) 1.2s forwards;
+    }
+    .hero-badge-line {
+      font-family: var(--font-cond);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .hero-badge-main {
+      font-family: var(--font-cond);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: var(--gold);
+    }
+
+    .hero-scroll-indicator {
+      position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+      z-index: 10;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      opacity: 0;
+      animation: fade-up 1s var(--ease) 1.5s forwards;
+    }
+    .scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, transparent, var(--gold-dim));
+      animation: scroll-pulse 2s ease-in-out infinite;
+    }
+    @keyframes scroll-pulse {
+      0%,100% { opacity: 0.4; } 50% { opacity: 1; }
+    }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── SECTION SHELLS ─── */
+    section {
+      padding: 90px 40px;
+    }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+
+    /* ─── MANIFESTO ─── */
+    #manifesto {
+      background: var(--off-black);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .manifesto-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .manifesto-img-wrap {
+      position: relative;
+      aspect-ratio: 4/5;
+      overflow: hidden;
+    }
+    .manifesto-img-wrap::before {
+      content: 'KM ABDUL KAIUM\AFilmmaker · Director · Strategist';
+      white-space: pre;
+      position: absolute; inset: 0; z-index: 2;
+      display: flex; align-items: flex-end;
+      padding: 20px 22px;
+      font-family: var(--font-cond);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted-light);
+      background: linear-gradient(to top, rgba(8,8,8,0.85) 0%, transparent 45%);
+    }
+    .img-placeholder {
+      width: 100%; height: 100%;
+      background: var(--panel);
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .img-placeholder::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, transparent 40%, rgba(201,168,76,0.03) 100%);
+    }
+    .img-ph-label {
+      font-family: var(--font-cond);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      position: absolute; bottom: 12px; right: 14px;
+    }
+    /* Cinematic aspect ratio placeholder shapes */
+    .ph-shape {
+      width: 60%; height: 60%;
+      border: 1px solid var(--border-mid);
+      position: relative;
+    }
+    .ph-shape::before, .ph-shape::after {
+      content: '';
+      position: absolute;
+      border: 1px solid var(--border);
+    }
+    .ph-shape::before {
+      inset: 10px;
+    }
+    .ph-shape::after {
+      inset: 22px;
+      border-color: var(--gold-dim);
+      opacity: 0.4;
+    }
+
+    .manifesto-content {}
+    .manifesto-content .eyebrow { margin-bottom: 20px; }
+    .manifesto-h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 300;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+    }
+    .manifesto-h2 em { font-style: italic; color: var(--gold); }
+    .manifesto-body {
+      font-size: 0.85rem;
+      color: var(--muted-light);
+      line-height: 1.75;
+      margin-bottom: 14px;
+    }
+    .manifesto-quote {
+      margin: 28px 0;
+      padding-left: 18px;
+      border-left: 1px solid var(--gold-dim);
+    }
+    .manifesto-quote p {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--muted-light);
+      line-height: 1.45;
+    }
+    .manifesto-credentials {
+      display: flex; flex-direction: column; gap: 8px;
+      margin-top: 28px;
+    }
+    .credential-item {
+      display: flex; align-items: center; gap: 12px;
+      font-family: var(--font-cond);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .credential-dot {
+      width: 4px; height: 4px;
+      background: var(--gold);
+      border-radius: 50%; flex-shrink: 0;
+    }
+
+    /* ─── STATS BAR ─── */
+    #stats {
+      padding: 36px 40px;
+      background: var(--black);
+      border-bottom: 1px solid var(--border);
+    }
+    .stats-grid {
+      max-width: 1100px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    .stat-item {
+      padding: 12px 28px;
+      border-right: 1px solid var(--border);
+      text-align: center;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-family: var(--font-cond);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ─── SERVICES / PILLARS ─── */
+    #services {
+      background: var(--black);
+    }
+    .services-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: end;
+      margin-bottom: 60px;
+    }
+    .services-h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 300;
+      line-height: 1.2;
+    }
+    .services-h2 em { font-style: italic; color: var(--gold); }
+    .services-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.7;
+      padding-top: 8px;
+    }
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+    }
+    .pillar-card {
+      background: var(--off-black);
+      padding: 36px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 14px;
+    }
+    .pillar-card:hover { background: var(--panel); }
+    .pillar-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--gold);
+      transition: width 0.5s var(--ease);
+    }
+    .pillar-card:hover::before { width: 100%; }
+    .pillar-num {
+      font-family: var(--font-cond);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--gold-dim);
+    }
+    .pillar-icon-area {
+      width: 42px; height: 42px;
+      border: 1px solid var(--border-mid);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pillar-icon { font-size: 16px; color: var(--gold); }
+    .pillar-title {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 400;
+      line-height: 1.2;
+    }
+    .pillar-bn {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-style: italic;
+      color: var(--muted);
+    }
+    .pillar-body {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.72;
+    }
+    .pillar-tags {
+      display: flex; flex-wrap: wrap; gap: 6px;
+    }
+    .tag {
+      font-family: var(--font-cond);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--border-mid);
+      padding: 3px 9px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .pillar-card:hover .tag { color: var(--gold); border-color: var(--gold-dim); }
+
+    /* Alternating image-text layout per pillar pair */
+    .services-alt-section {
+      margin-top: 60px;
+      display: flex; flex-direction: column; gap: 1px;
+      background: var(--border);
+    }
+    .alt-row {
+      background: var(--off-black);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 300px;
+    }
+    .alt-row.reverse { direction: rtl; }
+    .alt-row.reverse > * { direction: ltr; }
+    .alt-img {
+      aspect-ratio: 16/9;
+      background: var(--panel);
+      position: relative;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .alt-img .scene-label {
+      position: absolute; bottom: 14px; left: 16px;
+      font-family: var(--font-cond);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(201,168,76,0.7);
+    }
+    .alt-img .cam-overlay {
+      position: absolute; top: 14px; right: 14px;
+      width: 28px; height: 20px;
+      border: 1px solid rgba(201,168,76,0.3);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .alt-img .cam-overlay::before {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,0.5);
+    }
+    /* Cinematic frame grid inside placeholders */
+    .scene-grid {
+      position: absolute; inset: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 1px;
+    }
+    .scene-cell {
+      background: var(--off-black);
+      position: relative;
+    }
+    .scene-cell:nth-child(1) { background: linear-gradient(135deg, #0c0c0a, #111008); }
+    .scene-cell:nth-child(2) { background: linear-gradient(145deg, #0a0c0c, #0f1010); }
+    .scene-cell:nth-child(3) { background: linear-gradient(125deg, #0c0a0a, #111010); }
+    .scene-cell:nth-child(4) { background: linear-gradient(150deg, #0a0c0a, #0e1008); }
+
+    .alt-text {
+      padding: 44px 40px;
+      display: flex; flex-direction: column; justify-content: center;
+      gap: 14px;
+    }
+    .alt-text .eyebrow { margin-bottom: 4px; }
+    .alt-text h3 {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 300;
+      line-height: 1.25;
+    }
+    .alt-text h3 em { font-style: italic; color: var(--gold); }
+    .alt-text p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+    .alt-link {
+      font-family: var(--font-cond);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 4px;
+      transition: gap 0.2s;
+    }
+    .alt-link:hover { gap: 14px; }
+
+    /* ─── GEAR ─── */
+    #gear {
+      background: var(--off-black);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .gear-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 48px;
+      gap: 40px;
+    }
+    .gear-h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 300;
+      line-height: 1.2;
+    }
+    .gear-h2 em { font-style: italic; color: var(--gold); }
+    .gear-header-right {
+      max-width: 340px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.72;
+      text-align: right;
+    }
+    .gear-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1px;
+      background: var(--border);
+    }
+    .gear-card {
+      background: var(--panel);
+      padding: 24px 20px 20px;
+      display: flex; flex-direction: column; gap: 12px;
+      transition: background 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .gear-card:hover { background: #181818; }
+    .gear-img-area {
+      aspect-ratio: 1;
+      background: var(--off-black);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .gear-ph {
+      width: 55%; height: 55%;
+      border: 1px solid var(--border-mid);
+      position: relative;
+    }
+    .gear-ph::before {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border: 1px solid rgba(201,168,76,0.2);
+    }
+    .gear-badge {
+      position: absolute; top: 8px; right: 8px;
+      font-family: var(--font-cond);
+      font-size: 7px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      background: var(--gold);
+      color: var(--black);
+      padding: 2px 6px;
+      font-weight: 600;
+    }
+    .gear-name {
+      font-family: var(--font-cond);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--white);
+      line-height: 1.3;
+    }
+    .gear-role {
+      font-family: var(--font-cond);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .gear-spec {
+      font-size: 0.72rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ─── PROOF WALL ─── */
+    #proof {
+      background: var(--black);
+      padding-bottom: 0;
+    }
+    .proof-header {
+      margin-bottom: 40px;
+      display: flex; align-items: flex-end; justify-content: space-between;
+      gap: 30px;
+    }
+    .proof-h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 300;
+      line-height: 1.2;
+    }
+    .proof-h2 em { font-style: italic; color: var(--gold); }
+    .drag-hint {
+      font-family: var(--font-cond);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex; align-items: center; gap: 8px;
+      white-space: nowrap;
+    }
+    .drag-hint::before {
+      content: '← DRAG →';
+      font-size: 8px;
+      color: var(--gold-dim);
+    }
+    .proof-track-wrap {
+      position: relative;
+      overflow: hidden;
+    }
+    .proof-track-wrap::before,
+    .proof-track-wrap::after {
+      content: '';
+      position: absolute; top: 0; bottom: 0; z-index: 2; width: 60px;
+      pointer-events: none;
+    }
+    .proof-track-wrap::before { left: 0; background: linear-gradient(to right, var(--black), transparent); }
+    .proof-track-wrap::after  { right: 0; background: linear-gradient(to left, var(--black), transparent); }
+    .proof-track {
+      display: flex;
+      gap: 16px;
+      padding: 0 40px 40px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      cursor: grab;
+      -webkit-overflow-scrolling: touch;
+    }
+    .proof-track::-webkit-scrollbar { height: 1px; }
+    .proof-track::-webkit-scrollbar-thumb { background: var(--gold-dim); }
+    .proof-track.dragging { cursor: grabbing; }
+    .proof-card {
+      flex: 0 0 320px;
+      background: var(--off-black);
+      border: 1px solid var(--border);
+      scroll-snap-align: start;
+      display: flex; flex-direction: column;
+      position: relative; overflow: hidden;
+      transition: border-color 0.25s;
+    }
+    .proof-card:hover { border-color: var(--gold-dim); }
+    .proof-card-img {
+      aspect-ratio: 16/9;
+      background: var(--panel);
+      position: relative;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .proof-type-badge {
+      position: absolute; top: 12px; left: 12px;
+      font-family: var(--font-cond);
+      font-size: 8px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: var(--black);
+      border: 1px solid var(--border-mid);
+      color: var(--muted-light);
+      padding: 3px 8px;
+    }
+    .proof-card-body {
+      padding: 20px 22px;
+      flex: 1;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .proof-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 400;
+      line-height: 1.25;
+    }
+    .proof-meta {
+      font-family: var(--font-cond);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .proof-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.7;
+      flex: 1;
+    }
+    .proof-stat {
+      display: flex; align-items: baseline; gap: 6px;
+      margin-top: 6px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .proof-stat-num {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      color: var(--gold);
+      font-weight: 400;
+    }
+    .proof-stat-label {
+      font-family: var(--font-cond);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ─── NETWORK ─── */
+    #network {
+      background: var(--off-black);
+      border-top: 1px solid var(--border);
+    }
+    .network-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .network-content .eyebrow { margin-bottom: 18px; }
+    .network-h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 18px;
+    }
+    .network-h2 em { font-style: italic; color: var(--gold); }
+    .network-body {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 28px;
+    }
+    .network-pull {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--muted-light);
+      border-left: 1px solid var(--gold-dim);
+      padding-left: 16px;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+    .network-visual {
+      position: relative;
+    }
+    .network-grid-portraits {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 4px;
+    }
+    .portrait-cell {
+      aspect-ratio: 1;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .portrait-cell:hover { border-color: var(--gold-dim); }
+    .portrait-cell::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, transparent 50%, rgba(201,168,76,0.04) 100%);
+    }
+    .portrait-blur-inner {
+      width: 55%; height: 55%;
+      border-radius: 50%;
+      background: var(--border-mid);
+      opacity: 0.5;
+    }
+    .portrait-cell.featured { border-color: var(--gold-dim); }
+    .portrait-cell.featured .portrait-blur-inner { opacity: 0.7; }
+    .network-label {
+      position: absolute; bottom: 6px;
+      left: 0; right: 0;
+      text-align: center;
+      font-family: var(--font-cond);
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(201,168,76,0.6);
+    }
+    .network-overlay-tag {
+      position: absolute; top: -12px; right: -12px;
+      background: var(--black);
+      border: 1px solid var(--gold-dim);
+      padding: 8px 14px;
+      font-family: var(--font-cond);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* ─── ELECTION HIGHLIGHT ─── */
+    #election {
+      background: var(--black);
+      border-top: 1px solid var(--border);
+    }
+    .election-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .election-img {
+      aspect-ratio: 4/3;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .election-img .scene-overlay {
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent 0px, transparent 22px,
+        rgba(201,168,76,0.015) 22px, rgba(201,168,76,0.015) 23px
+      );
+    }
+    .election-content .eyebrow { margin-bottom: 18px; }
+    .election-h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 300;
+      line-height: 1.25;
+      margin-bottom: 16px;
+    }
+    .election-h2 em { font-style: italic; color: var(--gold); }
+    .election-body {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 22px;
+    }
+    .election-metrics {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: var(--border);
+      margin-top: 28px;
+    }
+    .e-metric {
+      background: var(--off-black);
+      padding: 16px 14px;
+      text-align: center;
+    }
+    .e-metric-num {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--gold);
+      font-weight: 400;
+    }
+    .e-metric-label {
+      font-family: var(--font-cond);
+      font-size: 8px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    /* ─── CONSULTATION / CTA ─── */
+    #consult {
+      background: var(--off-black);
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .consult-inner {
+      max-width: 680px; margin: 0 auto;
+    }
+    .consult-eyebrow { justify-content: center; margin-bottom: 24px; }
+    .consult-h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4.5vw, 3.6rem);
+      font-weight: 300;
+      line-height: 1.12;
+      margin-bottom: 18px;
+    }
+    .consult-h2 em { font-style: italic; color: var(--gold); }
+    .consult-body {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 10px;
+    }
+    .consult-slots {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-cond);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 32px;
+    }
+    .slot-dot { width: 5px; height: 5px; background: var(--gold); border-radius: 50%; animation: blink 1.8s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+    .consult-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--font-cond);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      background: var(--gold);
+      color: var(--black);
+      padding: 16px 40px;
+      transition: background 0.25s, letter-spacing 0.25s;
+    }
+    .consult-btn:hover { background: #e0bd58; letter-spacing: 0.28em; }
+    .consult-fine {
+      margin-top: 20px;
+      font-family: var(--font-cond);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ─── MODAL ─── */
+    #modal-overlay {
+      position: fixed; inset: 0; z-index: 2000;
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    #modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--off-black);
+      border: 1px solid var(--border-mid);
+      max-width: 520px; width: 100%;
+      padding: 44px 40px;
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-close {
+      position: absolute; top: 18px; right: 20px;
+      font-family: var(--font-cond);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.2s;
+      cursor: none;
+    }
+    .modal-close:hover { color: var(--white); }
+    .modal-eyebrow { margin-bottom: 14px; }
+    .modal-h3 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 300;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+    .modal-h3 em { font-style: italic; color: var(--gold); }
+    .modal-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 30px;
+      line-height: 1.65;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-label {
+      display: block;
+      font-family: var(--font-cond);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted-light);
+      margin-bottom: 7px;
+    }
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      background: var(--black);
+      border: 1px solid var(--border-mid);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 300;
+      padding: 11px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      border-color: var(--gold-dim);
+    }
+    .form-textarea { resize: vertical; min-height: 80px; }
+    .form-select option { background: var(--off-black); }
+    .form-submit {
+      width: 100%;
+      background: var(--gold);
+      color: var(--black);
+      font-family: var(--font-cond);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 14px;
+      transition: background 0.25s;
+      cursor: none;
+    }
+    .form-submit:hover { background: #e0bd58; }
+    .form-note {
+      margin-top: 12px;
+      font-family: var(--font-cond);
+      font-size: 8px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+    }
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+    }
+    .form-success.show { display: block; }
+    .success-icon {
+      font-size: 2rem;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+    .success-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .success-body {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ─── FOOTER ─── */
+    #footer {
+      background: var(--black);
+      border-top: 1px solid var(--border);
+      padding: 48px 40px 30px;
+    }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      gap: 40px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      margin-bottom: 10px;
+    }
+    .footer-logo span { color: var(--gold); }
+    .footer-tagline {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    .footer-nav-col h4 {
+      font-family: var(--font-cond);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 14px;
+    }
+    .footer-nav-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-nav-col a {
+      font-size: 0.78rem;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    .footer-nav-col a:hover { color: var(--white); }
+    .footer-nav-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+    .footer-contact h4 {
+      font-family: var(--font-cond);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 14px;
+    }
+    .footer-contact p {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .footer-contact a { color: var(--gold); transition: opacity 0.2s; }
+    .footer-contact a:hover { opacity: 0.7; }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-copy {
+      font-family: var(--font-cond);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+    .footer-url {
+      font-family: var(--font-cond);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      color: var(--gold-dim);
+    }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 768px) {
+      section { padding: 60px 20px; }
+      #nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .nav-burger { display: flex; }
+      .hero-content { padding: 0 20px 50px; }
+      .hero-badge { right: 20px; bottom: 50px; }
+      .manifesto-grid { grid-template-columns: 1fr; gap: 36px; }
+      .services-header { grid-template-columns: 1fr; }
+      .pillars-grid { grid-template-columns: 1fr; }
+      .alt-row { grid-template-columns: 1fr; }
+      .alt-row.reverse { direction: ltr; }
+      .gear-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .network-grid { grid-template-columns: 1fr; }
+      .election-inner { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+      .modal-box { padding: 32px 24px; }
+      #cursor { display: none; }
+      body { cursor: default; }
+      button { cursor: pointer; }
+    }
+    @media (max-width: 520px) {
+      .gear-grid { grid-template-columns: 1fr; }
+      .election-metrics { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* ─── CMS EDIT HOOKS (data-cms attributes for CloudCannon/Decap) ─── */
+    [data-cms-edit]:hover::after {
+      content: attr(data-cms-label);
+      position: absolute; top: 0; right: 0;
+      background: rgba(201,168,76,0.85);
+      color: var(--black);
+      font-size: 9px; font-family: var(--font-cond);
+      letter-spacing: 0.1em;
+      padding: 2px 6px;
+      pointer-events: none;
+      z-index: 100;
+      display: none; /* enable in CMS preview mode by overriding this */
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ─── CURSOR ─── -->
+<div id="cursor" aria-hidden="true"></div>
+
+<!-- ─── MOBILE MENU ─── -->
+<nav id="mobile-menu" aria-label="Mobile navigation">
+  <a href="#manifesto" class="mobile-nav-link">About</a>
+  <a href="#services" class="mobile-nav-link">Services</a>
+  <a href="#gear" class="mobile-nav-link">Gear</a>
+  <a href="#proof" class="mobile-nav-link">Work</a>
+  <a href="#network" class="mobile-nav-link">Network</a>
+  <a href="#consult" class="mobile-nav-link">Strategy Call</a>
+</nav>
+
+<!-- ─── NAVIGATION ─── -->
+<header id="nav" role="banner">
+  <a href="#hero" class="nav-logo" aria-label="Brandem home">BRAN<span>DEM</span></a>
+  <ul class="nav-links" role="list">
+    <li><a href="#manifesto">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#gear">Gear</a></li>
+    <li><a href="#proof">Work</a></li>
+    <li><a href="#network">Network</a></li>
+  </ul>
+  <a href="#consult" class="nav-cta" role="button">Strategy Call</a>
+  <button class="nav-burger" id="burger-btn" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 01 — HERO
+═══════════════════════════════════════════ -->
+<section id="hero" aria-label="Hero — Brandem introduction">
+  <div class="hero-reel" aria-hidden="true">
+    <div class="reel-frames">
+      <div class="reel-frame"></div>
+      <div class="reel-frame"></div>
+      <div class="reel-frame"></div>
+      <div class="reel-frame"></div>
+      <div class="reel-frame"></div>
+      <div class="reel-frame"></div>
+    </div>
+    <div class="hero-flare"></div>
+  </div>
+
+  <div class="hero-content">
+    <p class="hero-counter">STUDIO BRANDEM · WWW.STUDIOBRANDEM.COM</p>
+    <h1 class="hero-h1" data-cms-edit data-cms-label="Hero Headline">
+      আমরা বিজ্ঞাপন বানাই না।<br />
+      We <em>Engineer</em> Want.
+    </h1>
+    <p class="hero-sub" data-cms-edit data-cms-label="Hero Subline">
+      Bangladesh's first filmmaker-led, cinema-grade brand strategy agency.
+      BFDC-certified direction. Netflix-approved production.
+      Elite brand storytelling — built to convert.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary" id="hero-cta" aria-label="Book strategy session">
+        Book Strategy Session <span class="btn-arrow">→</span>
+      </button>
+      <a href="#proof" class="btn-secondary">
+        View Our Work <span class="btn-arrow">↓</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-badge" aria-hidden="true">
+    <span class="hero-badge-line">Certified Direction</span>
+    <span class="hero-badge-line">BFDC · Bangladesh</span>
+    <span class="hero-badge-main">Sony FX3 / Netflix Grade</span>
+  </div>
+
+  <div class="hero-scroll-indicator" aria-hidden="true">
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 02 — STATS BAR
+═══════════════════════════════════════════ -->
+<div id="stats" role="region" aria-label="Agency at a glance">
+  <div class="stats-grid section-inner">
+    <div class="stat-item reveal">
+      <div class="stat-number">7+</div>
+      <div class="stat-label">Years of Production</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <div class="stat-number">2</div>
+      <div class="stat-label">BFDC Feature Films</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <div class="stat-number">1</div>
+      <div class="stat-label">National Election Won</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-3">
+      <div class="stat-number">∞</div>
+      <div class="stat-label">Desire Manufactured</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 03 — MANIFESTO
+═══════════════════════════════════════════ -->
+<section id="manifesto" role="region" aria-label="About Brandem and its founder">
+  <div class="section-inner">
+    <div class="manifesto-grid">
+      <div class="manifesto-img-wrap reveal">
+        <div class="img-placeholder">
+          <div class="ph-shape"></div>
+          <span class="img-ph-label">Founder Portrait</span>
+        </div>
+      </div>
+
+      <div class="manifesto-content">
+        <p class="eyebrow reveal">The Director's Frame</p>
+        <h2 class="manifesto-h2 reveal reveal-delay-1" data-cms-edit data-cms-label="Manifesto Heading">
+          গল্পটা তোমার।<br />
+          কিন্তু কে বলবে —<br />
+          <em>সেটাই আসল ব্যাপার।</em>
+        </h2>
+        <p class="manifesto-body reveal reveal-delay-2" data-cms-edit data-cms-label="Manifesto Body">
+          Brandem is not a typical ad agency. It is a director's chair for your brand —
+          led by <strong class="gold">KM Abdul Kaium</strong>, a certified Filmmaker, Director,
+          and Scriptwriter with an extensive BFDC (Bangladesh Film Development Corporation) background.
+          The same craft that shapes cinema now shapes your brand's story.
+        </p>
+        <div class="manifesto-quote reveal reveal-delay-2">
+          <p>"বেশিরভাগ agency তোমাকে content দেয়। আমরা তোমার audience কে convert করি।"</p>
+        </div>
+        <p class="manifesto-body reveal reveal-delay-3">
+          As the creative force behind major commercial productions and a veteran corporate
+          strategist, KM Abdul Kaium brings a singular ability to bridge the gap between
+          cinematic storytelling and measurable business performance.
+          This is not a service. This is a strategic partnership.
+        </p>
+
+        <div class="manifesto-credentials reveal reveal-delay-4">
+          <div class="credential-item">
+            <span class="credential-dot"></span>
+            Assistant Director — Feature Film "Beiman" (Aman Reza &amp; Bobby Haque) · BFDC
+          </div>
+          <div class="credential-item">
+            <span class="credential-dot"></span>
+            Creative Lead — TV Mega-Serial "Anarkoli" · Global TV
+          </div>
+          <div class="credential-item">
+            <span class="credential-dot"></span>
+            Digital Marketing Manager · Edubase Global
+          </div>
+          <div class="credential-item">
+            <span class="credential-dot"></span>
+            Head of Digital Marketing · Katabononline.com
+          </div>
+          <div class="credential-item">
+            <span class="credential-dot"></span>
+            Founder &amp; CEO · YCBD (Youth Community of Bangladesh)
+          </div>
+          <div class="credential-item">
+            <span class="credential-dot"></span>
+            Full Digital Strategist — Chandpur-4 National Parliament Election
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 04 — SERVICES / PILLARS
+═══════════════════════════════════════════ -->
+<section id="services" role="region" aria-label="Brandem services and capabilities">
+  <div class="section-inner">
+    <div class="services-header">
+      <div>
+        <p class="eyebrow reveal">The Four Weapons</p>
+        <h2 class="services-h2 reveal reveal-delay-1">
+          চারটা weapon।<br /><em>একটাই লক্ষ্য।</em>
+        </h2>
+      </div>
+      <p class="services-desc reveal reveal-delay-2">
+        Every service we offer is built around one goal —
+        positioning your brand as the market leader.
+        Not a contender. The standard.
+        বাকি সবাই follow করবে।
+      </p>
+    </div>
+
+    <div class="pillars-grid reveal">
+      <!-- Pillar 01 -->
+      <div class="pillar-card">
+        <div class="pillar-num">01</div>
+        <div class="pillar-icon-area" aria-hidden="true">
+          <span class="pillar-icon">▶</span>
+        </div>
+        <div>
+          <h3 class="pillar-title" data-cms-edit>TVC / OVC Production</h3>
+          <p class="pillar-bn">চলচ্চিত্রের মতো বিজ্ঞাপন</p>
+        </div>
+        <p class="pillar-body" data-cms-edit>
+          Netflix-approved, cinema-grade commercials shot on the Sony FX3.
+          Your 30-second story built to sell for the next 30 years.
+          3D mockup visualization, full post-production, and color grading included.
+        </p>
+        <div class="pillar-tags">
+          <span class="tag">TVC</span>
+          <span class="tag">OVC</span>
+          <span class="tag">Social Films</span>
+          <span class="tag">Post-Production</span>
+        </div>
+      </div>
+
+      <!-- Pillar 02 -->
+      <div class="pillar-card">
+        <div class="pillar-num">02</div>
+        <div class="pillar-icon-area" aria-hidden="true">
+          <span class="pillar-icon">★</span>
+        </div>
+        <div>
+          <h3 class="pillar-title" data-cms-edit>Artist Management &amp; PR</h3>
+          <p class="pillar-bn">তারকার আস্থা, brand এর শক্তি</p>
+        </div>
+        <p class="pillar-body" data-cms-edit>
+          We don't cold-call talent. We call old friends.
+          Deep personal and on-set relationships with Bangladesh's top film actors,
+          recording artists, and the country's most-followed digital creators.
+          আমাদের phone book টাই আমাদের সবচেয়ে বড় asset।
+        </p>
+        <div class="pillar-tags">
+          <span class="tag">Celebrity Endorsement</span>
+          <span class="tag">Influencer Strategy</span>
+          <span class="tag">PR Campaigns</span>
+        </div>
+      </div>
+
+      <!-- Pillar 03 -->
+      <div class="pillar-card">
+        <div class="pillar-num">03</div>
+        <div class="pillar-icon-area" aria-hidden="true">
+          <span class="pillar-icon">◈</span>
+        </div>
+        <div>
+          <h3 class="pillar-title" data-cms-edit>High-Stakes Brand Strategy</h3>
+          <p class="pillar-bn">ব্যবসার স্থায়ী strategy</p>
+        </div>
+        <p class="pillar-body" data-cms-edit>
+          From boardroom briefs to viral campaign architecture —
+          we build strategies that move markets, not just metrics.
+          Full digital ecosystem mapping, audience psychology analysis,
+          and conversion-optimized content systems.
+        </p>
+        <div class="pillar-tags">
+          <span class="tag">Digital Strategy</span>
+          <span class="tag">Brand Architecture</span>
+          <span class="tag">Growth Systems</span>
+        </div>
+      </div>
+
+      <!-- Pillar 04 -->
+      <div class="pillar-card">
+        <div class="pillar-num">04</div>
+        <div class="pillar-icon-area" aria-hidden="true">
+          <span class="pillar-icon">⬡</span>
+        </div>
+        <div>
+          <h3 class="pillar-title" data-cms-edit>Political &amp; Mass Campaigns</h3>
+          <p class="pillar-bn">নির্বাচনী শক্তি · Mass mobilization</p>
+        </div>
+        <p class="pillar-body" data-cms-edit>
+          Proven at the national level. We executed the full digital strategy and
+          mass mobilization campaign for the Chandpur-4 National Parliament Election.
+          If we can move a constituency, we can move your market.
+        </p>
+        <div class="pillar-tags">
+          <span class="tag">Political Campaigns</span>
+          <span class="tag">Mass Mobilization</span>
+          <span class="tag">Digital Outreach</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alternating image-text showcase -->
+  <div class="services-alt-section" role="list">
+    <!-- Row 01: TVC Production visual -->
+    <div class="alt-row reveal">
+      <div class="alt-img">
+        <div class="scene-grid" aria-hidden="true">
+          <div class="scene-cell"></div>
+          <div class="scene-cell"></div>
+          <div class="scene-cell"></div>
+          <div class="scene-cell"></div>
+        </div>
+        <span class="scene-label">Production · Sony FX3 On Set</span>
+        <div class="cam-overlay" aria-hidden="true"></div>
+      </div>
+      <div class="alt-text">
+        <p class="eyebrow">Behind The Frame</p>
+        <h3>"Beiman" <em>—</em><br />BFDC Feature Film</h3>
+        <p>
+          Starring <strong class="gold">Aman Reza</strong> and <strong class="gold">Bobby Haque</strong>,
+          "Beiman" stands as a defining moment in Bangladeshi commercial cinema.
+          As Assistant Director under the BFDC umbrella, KM Abdul Kaium brought
+          his signature visual language to every frame — a language now available
+          exclusively to Brandem's brand partners.
+        </p>
+        <p>
+          <em class="gold" style="font-family:var(--font-display); font-style:italic;">
+            "Beiman যেভাবে দর্শককে আবেগে টেনেছে — আমরা তোমার brand কেও সেভাবেই market এ টেনে আনব।"
+          </em>
+        </p>
+        <a href="#proof" class="alt-link">See Full Portfolio <span>→</span></a>
+      </div>
+    </div>
+
+    <!-- Row 02: Anarkoli / TV production (reversed) -->
+    <div class="alt-row reverse reveal">
+      <div class="alt-img">
+        <div class="scene-grid" aria-hidden="true">
+          <div class="scene-cell"></div>
+          <div class="scene-cell"></div>
+          <div class="scene-cell"></div>
+          <div class="scene-cell"></div>
+        </div>
+        <span class="scene-label">TV Serial · Global TV</span>
+        <div class="cam-overlay" aria-hidden="true"></div>
+      </div>
+      <div class="alt-text">
+        <p class="eyebrow">Mass Audience Mastery</p>
+        <h3>"Anarkoli" <em>—</em><br />Global TV Mega-Serial</h3>
+        <p>
+          One of Bangladesh's most beloved TV mega-serials, "Anarkoli" on Global TV
+          demanded narrative discipline, mass emotional appeal, and consistent
+          production quality across hundreds of episodes.
+          That same understanding of mass audience psychology is what we deploy
+          for your brand's content strategy.
+        </p>
+        <p style="font-size:0.78rem; color:var(--muted);">
+          Millions of viewers. Zero drop in engagement.
+          তোমার brand এর জন্যও সেটাই করব।
+        </p>
+        <a href="#proof" class="alt-link">Explore Case Studies <span>→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 05 — GEAR
+═══════════════════════════════════════════ -->
+<section id="gear" role="region" aria-label="Brandem production gear">
+  <div class="section-inner">
+    <div class="gear-header">
+      <div>
+        <p class="eyebrow reveal">The Arsenal</p>
+        <h2 class="gear-h2 reveal reveal-delay-1">
+          Netflix-grade.<br /><em>No compromise.</em>
+        </h2>
+      </div>
+      <p class="gear-header-right reveal reveal-delay-2">
+        আমাদের gear list দেখলে বুঝবে —
+        এটা agency না, এটা একটা full production house এর power।
+        Every frame we deliver is Netflix-approved quality.
+      </p>
+    </div>
+
+    <div class="gear-grid reveal">
+      <!-- Sony FX3 -->
+      <div class="gear-card">
+        <div class="gear-img-area">
+          <div class="gear-ph"></div>
+          <span class="gear-badge">Netflix</span>
+        </div>
+        <div>
+          <p class="gear-role">Primary Cinema Camera</p>
+          <h3 class="gear-name">Sony FX3</h3>
+        </div>
+        <p class="gear-spec">
+          Full-frame, 12.1MP, Cinema Line.
+          Netflix-approved acquisition format.
+          The same standard as the world's most-watched productions.
+        </p>
+      </div>
+
+      <!-- Sony A7IV -->
+      <div class="gear-card">
+        <div class="gear-img-area">
+          <div class="gear-ph"></div>
+        </div>
+        <div>
+          <p class="gear-role">Secondary Mirrorless</p>
+          <h3 class="gear-name">Sony A7 IV</h3>
+        </div>
+        <p class="gear-spec">
+          33MP full-frame sensor.
+          4K 60p video.
+          Perfect B-roll &amp; multi-cam setups for high-volume shoots.
+        </p>
+      </div>
+
+      <!-- Sigma 85mm -->
+      <div class="gear-card">
+        <div class="gear-img-area">
+          <div class="gear-ph"></div>
+        </div>
+        <div>
+          <p class="gear-role">Prime Portrait Lens</p>
+          <h3 class="gear-name">Sigma 85mm f/1.4</h3>
+        </div>
+        <p class="gear-spec">
+          The lens that collapses the distance between brand and buyer.
+          Signature cinematic compression &amp; bokeh
+          for product &amp; talent-driven campaigns.
+        </p>
+      </div>
+
+      <!-- DJI RS4 Pro -->
+      <div class="gear-card">
+        <div class="gear-img-area">
+          <div class="gear-ph"></div>
+        </div>
+        <div>
+          <p class="gear-role">Cinema Stabilizer</p>
+          <h3 class="gear-name">DJI RS4 Pro</h3>
+        </div>
+        <p class="gear-spec">
+          Because your brand deserves stability.
+          Three-axis gimbal with AI-powered object tracking
+          for seamless motion cinematography.
+        </p>
+      </div>
+
+      <!-- Drone -->
+      <div class="gear-card">
+        <div class="gear-img-area">
+          <div class="gear-ph"></div>
+        </div>
+        <div>
+          <p class="gear-role">Aerial Cinematography</p>
+          <h3 class="gear-name">Pro Drone Wing</h3>
+        </div>
+        <p class="gear-spec">
+          Scale, when the campaign demands it.
+          Aerial perspective for large-scale events,
+          political campaigns, and product reveal films.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 06 — PROOF WALL (Drag Scroll)
+═══════════════════════════════════════════ -->
+<section id="proof" role="region" aria-label="Brandem case studies and past work">
+  <div class="section-inner">
+    <div class="proof-header">
+      <div>
+        <p class="eyebrow reveal">Proof, Not Claims</p>
+        <h2 class="proof-h2 reveal reveal-delay-1">
+          বিশ্বাস অর্জন করতে হয় না।<br /><em>প্রমাণ দেখালেই হয়।</em>
+        </h2>
+      </div>
+      <div class="drag-hint reveal reveal-delay-2" aria-hidden="true">SCROLL FILMSTRIP</div>
+    </div>
+  </div>
+
+  <div class="proof-track-wrap">
+    <div class="proof-track" id="proof-track" role="list" aria-label="Case study filmstrip">
+
+      <!-- Card 01: Beiman -->
+      <article class="proof-card" role="listitem">
+        <div class="proof-card-img">
+          <div class="img-placeholder">
+            <div class="ph-shape"></div>
+          </div>
+          <span class="proof-type-badge">BFDC Feature Film</span>
+        </div>
+        <div class="proof-card-body">
+          <p class="proof-meta">Commercial Cinema · 2024–2025</p>
+          <h3 class="proof-title">"Beiman"</h3>
+          <p class="proof-desc">
+            BFDC-backed commercial feature film starring
+            <strong class="gold">Aman Reza</strong> and <strong class="gold">Bobby Haque</strong>.
+            KM Abdul Kaium served as Assistant Director, shaping the film's narrative
+            arc and visual identity. A landmark in Bangladesh's commercial cinema landscape.
+          </p>
+          <div class="proof-stat">
+            <span class="proof-stat-num">BFDC</span>
+            <span class="proof-stat-label">Bangladesh Film Development Corp. Certified</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 02: Anarkoli -->
+      <article class="proof-card" role="listitem">
+        <div class="proof-card-img">
+          <div class="img-placeholder"><div class="ph-shape"></div></div>
+          <span class="proof-type-badge">TV Mega-Serial</span>
+        </div>
+        <div class="proof-card-body">
+          <p class="proof-meta">Television · Global TV · Ongoing</p>
+          <h3 class="proof-title">"Anarkoli"</h3>
+          <p class="proof-desc">
+            Bangladesh's highly popular TV mega-serial on Global TV.
+            Creative involvement in narrative direction and production oversight
+            across a multi-episode run with millions of dedicated viewers.
+            Proof of mass-audience storytelling at scale.
+          </p>
+          <div class="proof-stat">
+            <span class="proof-stat-num">M+</span>
+            <span class="proof-stat-label">Viewers · National Broadcast</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 03: Chandpur Election -->
+      <article class="proof-card" role="listitem">
+        <div class="proof-card-img">
+          <div class="img-placeholder"><div class="ph-shape"></div></div>
+          <span class="proof-type-badge">Political Campaign</span>
+        </div>
+        <div class="proof-card-body">
+          <p class="proof-meta">Digital Strategy · National Level · Bangladesh</p>
+          <h3 class="proof-title">Chandpur-4<br />Parliament Campaign</h3>
+          <p class="proof-desc">
+            Full digital strategy architecture, social media campaign execution,
+            mass mobilization, and real-time response management for a
+            high-stakes National Parliament Election in Chandpur-4 constituency.
+            যে দল এর হয়ে কাজ করেছি, তারা জিতেছে।
+          </p>
+          <div class="proof-stat">
+            <span class="proof-stat-num">100%</span>
+            <span class="proof-stat-label">Digital Strategy Execution Rate</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 04: Edubase Global -->
+      <article class="proof-card" role="listitem">
+        <div class="proof-card-img">
+          <div class="img-placeholder"><div class="ph-shape"></div></div>
+          <span class="proof-type-badge">Corporate · EdTech</span>
+        </div>
+        <div class="proof-card-body">
+          <p class="proof-meta">Digital Marketing · Edubase Global</p>
+          <h3 class="proof-title">Edubase Global<br />Digital Strategy</h3>
+          <p class="proof-desc">
+            As Digital Marketing Manager at Edubase Global, led full-funnel
+            digital strategy, content production, and performance campaign execution
+            for one of Bangladesh's leading EdTech platforms.
+          </p>
+          <div class="proof-stat">
+            <span class="proof-stat-num">DMM</span>
+            <span class="proof-stat-label">Digital Marketing Manager · Edubase Global</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 05: Katabononline -->
+      <article class="proof-card" role="listitem">
+        <div class="proof-card-img">
+          <div class="img-placeholder"><div class="ph-shape"></div></div>
+          <span class="proof-type-badge">E-Commerce · BD</span>
+        </div>
+        <div class="proof-card-body">
+          <p class="proof-meta">Head of Digital Marketing · Katabononline.com</p>
+          <h3 class="proof-title">Katabononline.com<br />Growth Campaign</h3>
+          <p class="proof-desc">
+            As Head of Digital Marketing at Katabononline.com, architected
+            the complete digital growth strategy, leading a team to deliver
+            measurable increases in brand visibility, acquisition, and revenue.
+          </p>
+          <div class="proof-stat">
+            <span class="proof-stat-num">HoD</span>
+            <span class="proof-stat-label">Head of Digital Marketing</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 06: YCBD -->
+      <article class="proof-card" role="listitem">
+        <div class="proof-card-img">
+          <div class="img-placeholder"><div class="ph-shape"></div></div>
+          <span class="proof-type-badge">NGO · Youth · BD</span>
+        </div>
+        <div class="proof-card-body">
+          <p class="proof-meta">Founder &amp; CEO · NGO · Bangladesh</p>
+          <h3 class="proof-title">YCBD<br />Youth Community</h3>
+          <p class="proof-desc">
+            Founder &amp; CEO of YCBD (Youth Community of Bangladesh) —
+            a national-level NGO demonstrating mass mobilization,
+            community leadership, and the ability to build movements
+            from the ground up. পরিচালনার শক্তি শুধু screen এ না।
+          </p>
+          <div class="proof-stat">
+            <span class="proof-stat-num">CEO</span>
+            <span class="proof-stat-label">Founder · Youth Community of Bangladesh</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 07 — NETWORK
+═══════════════════════════════════════════ -->
+<section id="network" role="region" aria-label="Brandem network and celebrity connections">
+  <div class="section-inner">
+    <div class="network-grid">
+      <div class="network-content">
+        <p class="eyebrow reveal">The Inner Circle</p>
+        <h2 class="network-h2 reveal reveal-delay-1">
+          Access is<br /><em>everything.</em>
+        </h2>
+        <p class="network-body reveal reveal-delay-2" data-cms-edit>
+          Brandem's creative relationships span Bangladesh's top film actors,
+          recording artists, and the country's most-followed digital creators
+          and YouTubers. Built on-set, over years, through genuine creative partnership —
+          not transactional influencer databases.
+        </p>
+        <div class="network-pull reveal reveal-delay-2">
+          "আমরা talent কে cold-call করি না। আমরা পুরনো বন্ধুকে ফোন করি।"
+        </div>
+        <p class="network-body reveal reveal-delay-3">
+          This is the circle that makes campaigns go viral — not algorithms.
+          When your brand campaign needs the right face, the right voice,
+          or the right moment of cultural relevance, we have
+          the relationships to make it happen.
+          এই network টা শুধু Brandem এর client রাই access করতে পারে।
+        </p>
+        <button class="btn-primary reveal reveal-delay-4" id="network-cta" style="margin-top:8px;">
+          Discuss Your Campaign <span class="btn-arrow">→</span>
+        </button>
+      </div>
+
+      <div class="network-visual reveal reveal-delay-2">
+        <div class="network-grid-portraits" role="presentation" aria-hidden="true">
+          <div class="portrait-cell featured">
+            <div class="portrait-blur-inner"></div>
+            <span class="network-label">Film Actor</span>
+          </div>
+          <div class="portrait-cell featured">
+            <div class="portrait-blur-inner"></div>
+            <span class="network-label">Recording Artist</span>
+          </div>
+          <div class="portrait-cell">
+            <div class="portrait-blur-inner"></div>
+            <span class="network-label">YouTuber</span>
+          </div>
+          <div class="portrait-cell">
+            <div class="portrait-blur-inner"></div>
+            <span class="network-label">Digital Creator</span>
+          </div>
+          <div class="portrait-cell featured">
+            <div class="portrait-blur-inner"></div>
+            <span class="network-label">TV Actor</span>
+          </div>
+          <div class="portrait-cell">
+            <div class="portrait-blur-inner"></div>
+            <span class="network-label">Influencer</span>
+          </div>
+          <div class="portrait-cell">
+            <div class="portrait-blur-inner"></div>
+            <span class="network-label">Brand Ambassador</span>
+          </div>
+          <div class="portrait-cell featured">
+            <div class="portrait-blur-inner"></div>
+            <span class="network-label">Film Director</span>
+          </div>
+          <div class="portrait-cell">
+            <div class="portrait-blur-inner"></div>
+            <span class="network-label">Content Creator</span>
+          </div>
+        </div>
+        <div class="network-overlay-tag" aria-hidden="true">Members Only ·&nbsp;Exclusive Access</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 08 — ELECTION HIGHLIGHT
+═══════════════════════════════════════════ -->
+<section id="election" role="region" aria-label="Chandpur-4 election campaign case study">
+  <div class="election-inner">
+    <div class="election-img reveal">
+      <div class="scene-overlay" aria-hidden="true"></div>
+      <div class="img-placeholder">
+        <div class="ph-shape"></div>
+        <span class="img-ph-label">Campaign Visual · Chandpur-4</span>
+      </div>
+    </div>
+    <div class="election-content">
+      <p class="eyebrow reveal">The Highest-Stakes Proof</p>
+      <h2 class="election-h2 reveal reveal-delay-1">
+        যে দলকে জেতাতে<br />পারি, তোমার <em>brand কেও</em><br />market জেতাতে পারব।
+      </h2>
+      <p class="election-body reveal reveal-delay-2" data-cms-edit>
+        The full digital architecture, content strategy, social media campaign execution,
+        real-time response management, and mass mobilization coordination for the
+        <strong class="gold">Chandpur-4 National Parliament Election</strong>
+        was entirely designed and executed by KM Abdul Kaium and the Brandem team.
+      </p>
+      <p class="election-body reveal reveal-delay-3">
+        This is the ultimate stress-test for a digital strategist —
+        failure is public, irreversible, and measured in votes.
+        We delivered. If we can execute at the scale of national democracy,
+        we can execute your product launch, your brand refresh,
+        or your market dominance campaign.
+      </p>
+      <div class="election-metrics reveal reveal-delay-4">
+        <div class="e-metric">
+          <div class="e-metric-num">1</div>
+          <div class="e-metric-label">Constituency</div>
+        </div>
+        <div class="e-metric">
+          <div class="e-metric-num">Full</div>
+          <div class="e-metric-label">Digital Strategy</div>
+        </div>
+        <div class="e-metric">
+          <div class="e-metric-num">Won</div>
+          <div class="e-metric-label">Result</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 09 — CONSULTATION CTA
+═══════════════════════════════════════════ -->
+<section id="consult" role="region" aria-label="Book a strategy consultation with Brandem">
+  <div class="consult-inner">
+    <p class="eyebrow consult-eyebrow reveal">Restricted Access</p>
+    <h2 class="consult-h2 reveal reveal-delay-1">
+      আমরা সবার সাথে<br />কাজ করি না।<br />
+      কিন্তু হয়তো <em>তোমার</em><br />সাথে করব।
+    </h2>
+    <p class="consult-body reveal reveal-delay-2">
+      Brandem takes on a strictly limited number of new brand partnerships each quarter.
+      If your brand is ready to lead its market — not follow it —
+      this is your one conversation.
+    </p>
+    <p class="consult-body reveal reveal-delay-3" style="margin-bottom:24px;">
+      No sales pitch. No template decks.
+      One hour. Your brand's cinematic future.
+    </p>
+    <div class="consult-slots reveal reveal-delay-3">
+      <span class="slot-dot" aria-hidden="true"></span>
+      এই quarter এ মাত্র ৩টি slot বাকি আছে
+    </div>
+    <div class="reveal reveal-delay-4">
+      <button class="consult-btn" id="consult-cta" aria-label="Request private strategy session">
+        Request Your Private Strategy Session <span>→</span>
+      </button>
+      <p class="consult-fine">One-on-one · Confidential · No obligation · High-intent brands only</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer id="footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">BRAN<span>DEM</span></div>
+        <p class="footer-tagline">
+          Bangladesh's premier filmmaker-led<br />
+          cinematic brand strategy agency.<br />
+          We Engineer Want.
+        </p>
+      </div>
+
+      <div class="footer-nav-grid">
+        <div class="footer-nav-col">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="#manifesto">About the Director</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#gear">Production Gear</a></li>
+            <li><a href="#proof">Case Studies</a></li>
+            <li><a href="#network">Our Network</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-col">
+          <h4>Capabilities</h4>
+          <ul>
+            <li><a href="#services">TVC / OVC Production</a></li>
+            <li><a href="#services">Artist &amp; PR Management</a></li>
+            <li><a href="#services">Brand Strategy</a></li>
+            <li><a href="#services">Political Campaigns</a></li>
+            <li><a href="#consult">Strategy Sessions</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-contact">
+        <h4>Reach Us</h4>
+        <p>
+          Studio Brandem<br />
+          Dhaka, Bangladesh<br /><br />
+          <a href="https://www.studiobrandem.com" target="_blank" rel="noopener noreferrer">
+            www.studiobrandem.com
+          </a><br /><br />
+          BFDC Certified Production<br />
+          Netflix-Grade Gear
+        </p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">
+        © 2025 Brandem. All rights reserved. Founded by KM Abdul Kaium.
+      </p>
+      <span class="footer-url">studiobrandem.com</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════
+     CONSULTATION MODAL
+═══════════════════════════════════════════ -->
+<div id="modal-overlay" role="dialog" aria-modal="true" aria-label="Request a strategy session">
+  <div class="modal-box">
+    <button class="modal-close" id="modal-close-btn" aria-label="Close modal">✕ Close</button>
+
+    <div id="form-wrapper">
+      <p class="eyebrow modal-eyebrow">Private Strategy Session</p>
+      <h3 class="modal-h3">Let's Talk About<br /><em>Your Brand.</em></h3>
+      <p class="modal-sub">
+        We review every inquiry personally.
+        High-intent brands only — এই session টা শুধু তাদের জন্য যারা সত্যিকারের
+        market leadership চান।
+      </p>
+
+      <form id="consult-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="f-name">Your Name *</label>
+          <input class="form-input" type="text" id="f-name" name="name" placeholder="Full name" required autocomplete="name" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-company">Company / Brand *</label>
+          <input class="form-input" type="text" id="f-company" name="company" placeholder="Brand or company name" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-email">Email Address *</label>
+          <input class="form-input" type="email" id="f-email" name="email" placeholder="your@email.com" required autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-phone">WhatsApp / Phone</label>
+          <input class="form-input" type="tel" id="f-phone" name="phone" placeholder="+880 ..." autocomplete="tel" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-service">Primary Need</label>
+          <select class="form-select" id="f-service" name="service">
+            <option value="">Select service area</option>
+            <option value="tvc">TVC / OVC Production</option>
+            <option value="pr">Artist Management &amp; PR</option>
+            <option value="strategy">Brand Strategy &amp; Digital</option>
+            <option value="political">Political Campaign</option>
+            <option value="full">Full Brand Partnership</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-challenge">Your Brand's Challenge *</label>
+          <textarea class="form-textarea" id="f-challenge" name="challenge"
+            placeholder="Briefly describe what you want to achieve. তোমার brand কে কোথায় নিয়ে যেতে চাও?"
+            required></textarea>
+        </div>
+        <button type="submit" class="form-submit">
+          Submit Request — আমি প্রস্তুত
+        </button>
+        <p class="form-note">
+          We respond within 24 hours · All inquiries are strictly confidential
+        </p>
+      </form>
+    </div>
+
+    <div class="form-success" id="form-success">
+      <div class="success-icon">◈</div>
+      <h3 class="success-title">Request <span class="gold">Received.</span></h3>
+      <p class="success-body">
+        তোমার inquiry টা আমাদের কাছে পৌঁছেছে।<br />
+        KM Abdul Kaium personally reviews every request.
+        Expect a response within 24 hours.
+        <br /><br />
+        <em style="font-family:var(--font-display); font-style:italic; color:var(--muted-light);">
+          "তোমার brand এর গল্প বলার অপেক্ষায় আছি।"
+        </em>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════ -->
+<script>
+(function () {
+  'use strict';
+
+  /* ── CURSOR ── */
+  const cursor = document.getElementById('cursor');
+  let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
+  document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+  document.addEventListener('mousedown', () => cursor.classList.add('click'));
+  document.addEventListener('mouseup', () => cursor.classList.remove('click'));
+  const hoverTargets = 'a, button, [role="button"], .proof-card, .pillar-card, .gear-card';
+  document.addEventListener('mouseover', e => {
+    if (e.target.closest(hoverTargets)) cursor.classList.add('hover');
+  });
+  document.addEventListener('mouseout', e => {
+    if (e.target.closest(hoverTargets)) cursor.classList.remove('hover');
+  });
+  function animateCursor() {
+    curX += (mouseX - curX) * 0.14;
+    curY += (mouseY - curY) * 0.14;
+    cursor.style.left = curX + 'px';
+    cursor.style.top  = curY + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  /* ── NAV SCROLL ── */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  /* ── MOBILE BURGER ── */
+  const burger = document.getElementById('burger-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
+  let menuOpen = false;
+
+  function toggleMenu(open) {
+    menuOpen = open;
+    mobileMenu.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+    const spans = burger.querySelectorAll('span');
+    if (open) {
+      spans[0].style.transform = 'translateY(6px) rotate(45deg)';
+      spans[1].style.opacity = '0';
+      spans[2].style.transform = 'translateY(-6px) rotate(-45deg)';
+    } else {
+      spans[0].style.transform = '';
+      spans[1].style.opacity = '';
+      spans[2].style.transform = '';
+    }
+  }
+
+  burger.addEventListener('click', () => toggleMenu(!menuOpen));
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', () => toggleMenu(false));
+  });
+
+  /* ── SMOOTH SCROLL for all anchor links ── */
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (!target) return;
+      e.preventDefault();
+      const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'));
+      const top = target.getBoundingClientRect().top + window.pageYOffset - navH;
+      window.scrollTo({ top, behavior: 'smooth' });
+    });
+  });
+
+  /* ── INTERSECTION OBSERVER (reveal animations) ── */
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => observer.observe(el));
+
+  /* ── PROOF TRACK DRAG SCROLL ── */
+  const track = document.getElementById('proof-track');
+  let isDragging = false, startX = 0, scrollLeft = 0;
+
+  track.addEventListener('mousedown', e => {
+    isDragging = true;
+    startX = e.pageX - track.offsetLeft;
+    scrollLeft = track.scrollLeft;
+    track.classList.add('dragging');
+    e.preventDefault();
+  });
+  document.addEventListener('mouseup', () => {
+    isDragging = false;
+    track.classList.remove('dragging');
+  });
+  document.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    const x = e.pageX - track.offsetLeft;
+    const walk = (x - startX) * 1.4;
+    track.scrollLeft = scrollLeft - walk;
+  });
+
+  /* Touch support for proof track */
+  let touchStartX = 0, touchScrollLeft = 0;
+  track.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].pageX;
+    touchScrollLeft = track.scrollLeft;
+  }, { passive: true });
+  track.addEventListener('touchmove', e => {
+    const dx = touchStartX - e.touches[0].pageX;
+    track.scrollLeft = touchScrollLeft + dx;
+  }, { passive: true });
+
+  /* ── MODAL ── */
+  const modalOverlay = document.getElementById('modal-overlay');
+  const modalCloseBtn = document.getElementById('modal-close-btn');
+  const triggerIds = ['hero-cta', 'consult-cta', 'network-cta'];
+
+  function openModal() {
+    modalOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => {
+      const firstInput = modalOverlay.querySelector('input, textarea');
+      if (firstInput) firstInput.focus();
+    }, 100);
+  }
+  function closeModal() {
+    modalOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  triggerIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('click', openModal);
+  });
+
+  /* Also open modal from nav CTA */
+  document.querySelectorAll('.nav-cta').forEach(el => {
+    el.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (href === '#consult') {
+        e.preventDefault();
+        openModal();
+      }
+    });
+  });
+
+  modalCloseBtn.addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', e => {
+    if (e.target === modalOverlay) closeModal();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modalOverlay.classList.contains('open')) closeModal();
+  });
+
+  /* ── FORM VALIDATION & SUBMIT ── */
+  const form = document.getElementById('consult-form');
+  const formWrapper = document.getElementById('form-wrapper');
+  const formSuccess = document.getElementById('form-success');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const name = document.getElementById('f-name').value.trim();
+    const company = document.getElementById('f-company').value.trim();
+    const email = document.getElementById('f-email').value.trim();
+    const challenge = document.getElementById('f-challenge').value.trim();
+
+    /* Basic validation */
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!name) { highlight('f-name'); return; }
+    if (!company) { highlight('f-company'); return; }
+    if (!email || !emailRegex.test(email)) { highlight('f-email'); return; }
+    if (!challenge) { highlight('f-challenge'); return; }
+
+    /* Simulate async submission */
+    const submitBtn = form.querySelector('.form-submit');
+    submitBtn.textContent = 'Sending...';
+    submitBtn.disabled = true;
+    setTimeout(() => {
+      formWrapper.style.display = 'none';
+      formSuccess.classList.add('show');
+    }, 900);
+  });
+
+  function highlight(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.style.borderColor = '#8B2020';
+    el.focus();
+    setTimeout(() => { el.style.borderColor = ''; }, 2200);
+  }
+
+  /* ── ANIMATED COUNTER (stats on scroll) ── */
+  const statNumbers = document.querySelectorAll('.stat-number');
+  const statsSection = document.getElementById('stats');
+  let counted = false;
+
+  const statsObs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && !counted) {
+      counted = true;
+      statsObs.disconnect();
+    }
+  }, { threshold: 0.5 });
+  if (statsSection) statsObs.observe(statsSection);
+
+})();
+</script>
+
+</body>
+</html>
